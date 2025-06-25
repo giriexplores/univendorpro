@@ -120,9 +120,18 @@ export function ProductCard({ product, addToCart }: ProductCardProps) {
             </div>
           )}
 
-          <div className="flex gap-2 mt-4">
+          <div
+            onClick={() => {
+              if (!canAdd) {
+                alert("Please select size and color to perform this action.");
+              }
+            }}
+            className="flex gap-2 mt-4"
+          >
             <Button
-              onClick={() => addToCart(product, selectedColor, selectedSize, false)}
+              onClick={() =>
+                addToCart(product, selectedColor, selectedSize, false)
+              }
               disabled={!canAdd}
               variant="outline"
               size="sm"
@@ -135,7 +144,9 @@ export function ProductCard({ product, addToCart }: ProductCardProps) {
               {/* )} */}
             </Button>
             <Button
-              onClick={() => addToCart(product, selectedColor, selectedSize, true)}
+              onClick={() =>
+                addToCart(product, selectedColor, selectedSize, true)
+              }
               disabled={!canAdd}
               size="sm"
               className="flex-1"
