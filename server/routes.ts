@@ -545,110 +545,118 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Product routes
   // Get products test route
+  const productList = [
+    {
+      id: 101,
+      vendorId: 1,
+      name: "Urban Fit T-Shirt",
+      description:
+        "Comfortable and stylish cotton t-shirt perfect for everyday wear.",
+      price: "499.00",
+      imageUrl:
+        "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/r/h/d/s-tshirt-green-lionlook-original-imah7sj3gfndkxuh.jpeg?q=70&crop=false",
+      categoryId: null,
+      stock: 20,
+      isActive: true,
+      createdAt: "2025-06-09T12:00:00.000Z",
+      updatedAt: "2025-06-09T12:00:00.000Z",
+      colors: [
+        {
+          name: "Olive Green",
+          hex: "#556B2F",
+          imageUrl:
+            "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/r/h/d/s-tshirt-green-lionlook-original-imah7sj3gfndkxuh.jpeg?q=70&crop=false",
+        },
+        {
+          name: "Black",
+          hex: "#222222",
+          imageUrl:
+            "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/p/s/8/l-tshirt-black-lionlook-original-imah7sj3quwc58e7.jpeg?q=70&crop=false",
+        },
+        {
+          name: "Pink",
+          hex: "#ffaaaa",
+          imageUrl:
+            "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/d/y/u/s-tshirt-pink-lionlook-original-imah7sj4mscvdhuz.jpeg?q=70&crop=false",
+        },
+      ],
+      sizes: ["S", "M", "L", "XL"],
+      vendor: {
+        id: 1,
+        ownerId: 1,
+        name: "amzing store",
+        domain: "https://sub.krpl.tech",
+        customDomainId: 1,
+        description: "",
+        plan: "basic",
+        status: "active",
+        subscriptionStatus: "trial",
+        createdBy: 2,
+        createdAt: "2025-06-06T12:33:53.482Z",
+        updatedAt: "2025-06-06T12:34:29.979Z",
+      },
+    },
+    {
+      id: 102,
+      vendorId: 1,
+      name: "Classic Hoodie",
+      description:
+        "A soft fleece hoodie to keep you warm and fashionable during chilly days.",
+      price: "899.00",
+      imageUrl:
+        "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/b/f/1/3xl-h24-m-tkt-rd-adro-original-imahfqz8ktzeprax.jpeg?q=70&crop=false",
+      categoryId: null,
+      stock: 15,
+      isActive: true,
+      createdAt: "2025-06-09T12:01:00.000Z",
+      updatedAt: "2025-06-09T12:01:00.000Z",
+      colors: [
+        {
+          name: "red",
+          hex: "#ff0044",
+          imageUrl:
+            "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/b/f/1/3xl-h24-m-tkt-rd-adro-original-imahfqz8ktzeprax.jpeg?q=70&crop=false",
+        },
+        {
+          name: "Grey",
+          hex: "#DDDDDD",
+          imageUrl:
+            "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/1/s/l/m-h24-m-tkt-gr-adro-original-imahfqz8a5kbsg4x.jpeg?q=70&crop=false",
+        },
+        {
+          name: "Olive",
+          hex: "#556B2F",
+          imageUrl:
+            "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/r/l/g/m-h24-m-tkt-ol-adro-original-imahfqz8hch5nf6u.jpeg?q=70&crop=false",
+        },
+      ],
+      sizes: ["M", "L", "XL"],
+      vendor: {
+        id: 1,
+        ownerId: 1,
+        name: "amzing store",
+        domain: "https://sub.krpl.tech",
+        customDomainId: 1,
+        description: "",
+        plan: "basic",
+        status: "active",
+        subscriptionStatus: "trial",
+        createdBy: 2,
+        createdAt: "2025-06-06T12:33:53.482Z",
+        updatedAt: "2025-06-06T12:34:29.979Z",
+      },
+    },
+  ];
   app.get("/products/dummy", async(req, res) => {
-    const productList = [
-      {
-        id: 101,
-        vendorId: 1,
-        name: "Urban Fit T-Shirt",
-        description:
-          "Comfortable and stylish cotton t-shirt perfect for everyday wear.",
-        price: "499.00",
-        imageUrl:
-          "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/r/h/d/s-tshirt-green-lionlook-original-imah7sj3gfndkxuh.jpeg?q=70&crop=false",
-        categoryId: null,
-        stock: 20,
-        isActive: true,
-        createdAt: "2025-06-09T12:00:00.000Z",
-        updatedAt: "2025-06-09T12:00:00.000Z",
-        colors: [
-          {
-            name: "Olive Green",
-            hex: "#556B2F",
-            imageUrl:
-              "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/r/h/d/s-tshirt-green-lionlook-original-imah7sj3gfndkxuh.jpeg?q=70&crop=false",
-          },
-          {
-            name: "Black",
-            hex: "#222222",
-            imageUrl:
-              "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/p/s/8/l-tshirt-black-lionlook-original-imah7sj3quwc58e7.jpeg?q=70&crop=false",
-          },
-          {
-            name: "Pink",
-            hex: "#ffaaaa",
-            imageUrl:
-              "https://rukminim2.flixcart.com/image/832/832/xif0q/t-shirt/d/y/u/s-tshirt-pink-lionlook-original-imah7sj4mscvdhuz.jpeg?q=70&crop=false",
-          },
-        ],
-        sizes: ["S", "M", "L", "XL"],
-        vendor: {
-          id: 1,
-          ownerId: 1,
-          name: "amzing store",
-          domain: "https://sub.krpl.tech",
-          customDomainId: 1,
-          description: "",
-          plan: "basic",
-          status: "active",
-          subscriptionStatus: "trial",
-          createdBy: 2,
-          createdAt: "2025-06-06T12:33:53.482Z",
-          updatedAt: "2025-06-06T12:34:29.979Z",
-        },
-      },
-      {
-        id: 102,
-        vendorId: 1,
-        name: "Classic Hoodie",
-        description:
-          "A soft fleece hoodie to keep you warm and fashionable during chilly days.",
-        price: "899.00",
-        imageUrl:
-          "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/b/f/1/3xl-h24-m-tkt-rd-adro-original-imahfqz8ktzeprax.jpeg?q=70&crop=false",
-        categoryId: null,
-        stock: 15,
-        isActive: true,
-        createdAt: "2025-06-09T12:01:00.000Z",
-        updatedAt: "2025-06-09T12:01:00.000Z",
-        colors: [
-          {
-            name: "red",
-            hex: "#ff0044",
-            imageUrl:
-              "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/b/f/1/3xl-h24-m-tkt-rd-adro-original-imahfqz8ktzeprax.jpeg?q=70&crop=false",
-          },
-          {
-            name: "Grey",
-            hex: "#DDDDDD",
-            imageUrl:
-              "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/1/s/l/m-h24-m-tkt-gr-adro-original-imahfqz8a5kbsg4x.jpeg?q=70&crop=false",
-          },
-          {
-            name: "Olive",
-            hex: "#556B2F",
-            imageUrl:
-              "https://rukminim2.flixcart.com/image/832/832/xif0q/sweatshirt/r/l/g/m-h24-m-tkt-ol-adro-original-imahfqz8hch5nf6u.jpeg?q=70&crop=false",
-          },
-        ],
-        sizes: ["M", "L", "XL"],
-        vendor: {
-          id: 1,
-          ownerId: 1,
-          name: "amzing store",
-          domain: "https://sub.krpl.tech",
-          customDomainId: 1,
-          description: "",
-          plan: "basic",
-          status: "active",
-          subscriptionStatus: "trial",
-          createdBy: 2,
-          createdAt: "2025-06-06T12:33:53.482Z",
-          updatedAt: "2025-06-06T12:34:29.979Z",
-        },
-      },
-    ];
     res.json(productList);
+  });
+  app.get("/products/dummy/:id", async (req, res) => {
+    const productId = parseInt(req.params.id);
+    const product = productList.find((p) => p.id === productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json(product);
   });
 
   app.get("/api/products", async (req, res) => {

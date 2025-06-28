@@ -2,29 +2,18 @@ import { useEffect, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { queryClient, apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ShoppingCart } from "@/components/shopping-cart";
-import { CheckoutModal } from "@/components/checkout-modal";
-import { Link } from "wouter";
-import { Star, Package, Store, ShoppingCart as CartIcon } from "lucide-react";
+import { Card } from "@/components/ui/card";
+
+
+import { Star, Package, Store } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
 import { getCartFromLocalStorage, addToCartLocal } from "@/utils/cart";
 import { Product, CartItem } from "@/utils/types";
+import { StoreLayout } from "@/components/layout/store-layout";
 
-
-export default function Storefront() {
-  const { user, isAuthenticated } = useAuth();
+export default function Storefront() { 
   const { toast } = useToast();
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [localCart, setLocalCart] = useState<CartItem[]>([]);
-
-  useEffect(() => {
-    setLocalCart(getCartFromLocalStorage());
-  }, []);
 
   const { data: products = [], isLoading: productsLoading } = useQuery<
     Product[]
@@ -53,10 +42,7 @@ export default function Storefront() {
     //   });
     // } else {
     addToCartLocal(updatedProduct);
-    const updated = getCartFromLocalStorage();
-    setLocalCart(updated);
     toast({ title: "Added to cart", description: "Saved locally" });
-    if (goToCheckout) setIsCheckoutOpen(true);
     // }
   };
 
@@ -85,7 +71,7 @@ export default function Storefront() {
   // });
 
   // const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const cartItemCount = localCart.reduce((sum, item) => sum + item.quantity, 0);
+  
 
   // Group products by vendor for better organization
   const productsByVendor = products.reduce((acc, product) => {
@@ -113,62 +99,7 @@ export default function Storefront() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/">
-              <h1 className="text-xl font-bold text-gray-900 cursor-pointer">
-                SaaSCommerce
-              </h1>
-            </Link>
-            <div className="flex items-center space-x-4">
-              {/* {isAuthenticated && ( */}
-                <div
-                  className="relative cursor-pointer"
-                  onClick={() => setIsCartOpen(true)}
-                >
-                  <CartIcon className="w-6 h-6 text-gray-600 hover:text-primary" />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-accent text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </div>
-              {/* )} */}
-              {isAuthenticated ? (
-                <div className="flex items-center space-x-2">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src={user?.profileImageUrl || undefined} />
-                    <AvatarFallback>
-                      {user?.firstName?.[0] || user?.email?.[0] || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="text-sm text-gray-700">
-                    {user?.firstName || user?.email}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => (window.location.href = "/api/logout")}
-                  >
-                    Logout
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  onClick={() => (window.location.href = "/login")}
-                  size="sm"
-                >
-                  Login
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <StoreLayout>
       {/* Hero Section */}
       <div className="relative">
         <div
@@ -393,32 +324,6 @@ export default function Storefront() {
           )}
         </div>
       </div>
-
-      {/* Shopping Cart Sidebar */}
-      <ShoppingCart
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        onCheckout={() => {
-          setIsCartOpen(false);
-          setIsCheckoutOpen(true);
-        }}
-        // cartItems={cartItems}
-        cartItems={localCart}
-        // refetchCart={refetchCart}
-        setLocalCart={setLocalCart}
-      />
-
-      {/* Checkout Modal */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        // cartItems={cartItems}
-        cartItems={localCart}
-        onOrderComplete={() => {
-          setIsCheckoutOpen(false);
-          // refetchCart();
-        }}
-      />
-    </div>
+    </StoreLayout>
   );
 }
