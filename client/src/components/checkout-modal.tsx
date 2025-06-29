@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { X, CreditCard } from "lucide-react";
+import { useLocation } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
 
 const checkoutSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -39,7 +41,9 @@ interface CheckoutModalProps {
 
 export function CheckoutModal({ isOpen, onClose, cartItems, onOrderComplete }: CheckoutModalProps) {
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [location , setLocation] = useLocation();
 
   // Calculate totals
   const subtotal = cartItems.reduce((sum, item) => 
@@ -147,8 +151,20 @@ export function CheckoutModal({ isOpen, onClose, cartItems, onOrderComplete }: C
       setIsProcessing(false);
     }
   };
+  
+  useEffect(() => {
+    if (!isAuthenticated && isOpen) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to continue",
+        variant: "destructive",
+      });
+      setLocation("/login");
+    }
+  }, [isAuthenticated, isOpen, setLocation]);
 
   if (!isOpen) return null;
+  if (!isAuthenticated) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">

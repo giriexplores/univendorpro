@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 
 import { Star, Package, Store } from "lucide-react";
 import { ProductCard } from "@/components/product-card";
-import { getCartFromLocalStorage, addToCartLocal } from "@/utils/cart";
+import { addToCartLocal } from "@/utils/cart";
 import { Product, CartItem } from "@/utils/types";
 import { StoreLayout } from "@/components/layout/store-layout";
 

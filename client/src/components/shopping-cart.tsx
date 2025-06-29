@@ -10,24 +10,22 @@ import {
   Plus,
   Trash2,
   X,
-  Package,
   ShoppingBag,
-  CreditCard,
 } from "lucide-react";
 import {
   updateCartItemLocal,
   removeFromCartLocal,
-  saveCartToLocalStorage,
   getCartFromLocalStorage,
 } from "@/utils/cart";
-import { Product, CartItem } from "@/utils/types";
+import { CartItem } from "@/utils/types";
 
 interface ShoppingCartProps {
   isOpen: boolean;
   onClose: () => void;
   onCheckout: () => void;
-  cartItems: any[];
+  cartItems: CartItem[];
   refetchCart: () => void;
+  setLocalCart: (cart: CartItem[]) => void;
 }
 
 export function ShoppingCart({

@@ -150,7 +150,7 @@ export function ProductCard({ product, addToCart }: ProductCardProps) {
               toast({
                 title: "Selection Required",
                 description:
-                  "Please select size and color to perform this action.",
+                  "Please select size and color to perform this action.",             
               });
             }
           }}
@@ -178,6 +178,7 @@ export function ProductCard({ product, addToCart }: ProductCardProps) {
                   title: "Login Required",
                   description:
                     "Please login to buy products.",
+                    variant: "destructive",
                 });
                 setLocation("/login");
               } else {

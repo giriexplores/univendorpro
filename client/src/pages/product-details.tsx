@@ -14,26 +14,23 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
 
-
 const ProductDetails: React.FC = () => {
   // Get productId from URL
   const params = useParams();
   const productId = params.id;
   const [quantity, setQuantity] = useState<number>(1);
 
-
-
   const { isAuthenticated } = useAuth();
-    const [location, setLocation] = useLocation();
-    const { toast } = useToast();
-  
-    const [hoverImage, setHoverImage] = useState<string | null>(null);
-    const [selectedColor, setSelectedColor] = useState<{
-      name: string;
-      hex: string;
-      imageUrl: string;
-    } | null>(null);
-    const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [location, setLocation] = useLocation();
+  const { toast } = useToast();
+
+  const [hoverImage, setHoverImage] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<{
+    name: string;
+    hex: string;
+    imageUrl: string;
+  } | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   // Fetch product data
   const {
@@ -44,7 +41,6 @@ const ProductDetails: React.FC = () => {
     queryKey: [`/products/dummy/${productId}`],
     enabled: !!productId,
   });
-
 
   if (isLoading) {
     return (
@@ -75,7 +71,7 @@ const ProductDetails: React.FC = () => {
   const handleAddToCart = (
     product: Product,
     selectedColor: { name: string; hex: string; imageUrl: string } | null,
-    selectedSize: string | null,
+    selectedSize: string | null
   ) => {
     const updatedProduct: Product = { ...product, selectedColor, selectedSize };
     addToCartLocal(updatedProduct, quantity);
@@ -108,9 +104,7 @@ const ProductDetails: React.FC = () => {
               {product.vendor.name}
             </div>
             <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-            <p className="text-sm text-gray-600 mb-2">
-              {product.description}
-            </p>
+            <p className="text-sm text-gray-600 mb-2">{product.description}</p>
             <div className="text-2xl font-bold mb-2">₹{product.price}</div>
 
             <p className="text-green-500 mb-2 line-clamp-3">
@@ -243,7 +237,13 @@ const ProductDetails: React.FC = () => {
               <Button
                 onClick={() =>
                   isAuthenticated
-                    ? handleAddToCart(product, selectedColor, selectedSize, quantity, true)
+                    ? handleAddToCart(
+                        product,
+                        selectedColor,
+                        selectedSize,
+                        quantity,
+                        true
+                      )
                     : setLocation("/login")
                 }
                 disabled={!canAdd}
