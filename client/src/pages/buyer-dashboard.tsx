@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import DashboardLayout from "@/components/layout/dashboard-layout";
+import { CartItem } from "@/utils/types";
+import { getCartFromLocalStorage } from "@/utils/cart";
 
 interface Vendor {
   id: number;
@@ -42,21 +44,22 @@ interface Order {
   vendor?: Vendor;
 }
 
-interface CartItem {
-  id: number;
-  productId: number;
-  quantity: number;
-  product?: {
-    id: number;
-    name: string;
-    imageUrl: string | null;
-    price: string;
-  };
-}
+// interface CartItem {
+//   id: number;
+//   productId: number;
+//   quantity: number;
+//   product?: {
+//     id: number;
+//     name: string;
+//     imageUrl: string | null;
+//     price: string;
+//   };
+// }
 
 export default function BuyerDashboard() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const { toast } = useToast();
+  const [localCart, setLocalCart] = useState<CartItem[]>([]);
 
   // Redirect to home if not authenticated
   useEffect(() => {
@@ -71,17 +74,23 @@ export default function BuyerDashboard() {
       }, 500);
       return;
     }
+    setLocalCart(getCartFromLocalStorage());
   }, [isAuthenticated, isLoading, toast]);
+
+  const cartItemCount = localCart.reduce((sum, item) => sum + item.quantity, 0);
 
   const { data: orders = [] } = useQuery<Order[]>({
     queryKey: ["/api/orders"],
     enabled: !!user,
   });
+  
 
-  const { data: cartItems = [] } = useQuery<CartItem[]>({
-    queryKey: ["/api/cart"],
-    enabled: !!user,
-  });
+  // const { data: cartItems = [] } = useQuery<CartItem[]>({
+  //   queryKey: ["/api/cart"],
+  //   enabled: !!user,
+  // });
+
+
 
   const { data: vendors = [] } = useQuery<Vendor[]>({
     queryKey: ["/api/vendors"],
@@ -142,7 +151,8 @@ export default function BuyerDashboard() {
                     Cart Items
                   </p>
                   <p className="text-3xl font-bold text-gray-900">
-                    {cartItems.length}
+                    {/* {cartItems.length} */}
+                    {cartItemCount}
                   </p>
                 </div>
                 <div className="bg-orange-100 p-3 rounded-lg">

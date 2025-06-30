@@ -26,6 +26,7 @@ import AdminSettings from "@/pages/admin/settings";
 import FileManager from "@/pages/admin/file-manager";
 import SellerCategories from "@/pages/seller/categories";
 import SellerOrders from "@/pages/seller/orders";
+import CartPage from "@/pages/cart";
 
 function Router() {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -70,7 +71,7 @@ function Router() {
           <Route path="/seller/settings" component={SellerDashboard} />
           <Route path="/buyer" component={BuyerDashboard} />
           <Route path="/buyer/stores" component={BuyerDashboard} />
-          <Route path="/buyer/cart" component={BuyerDashboard} />
+          <Route path="/buyer/cart" component={CartPage} />
           <Route path="/buyer/orders" component={BuyerDashboard} />
           <Route path="/buyer/settings" component={BuyerDashboard} />
           <Route path="/store/:domain?" component={Storefront} />
